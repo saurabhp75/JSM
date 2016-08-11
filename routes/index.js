@@ -32,9 +32,9 @@ router.get('/', function(req, res) {
 });
 
 router.post("/contact", (req, res) => {
-  const payload = req.body;
+  const formFields = req.body;
 
-  const customerPayload = getCustomerPayload(payload);
+  const customerPayload = getCustomerPayload(formFields);
   request.post({
     url: jsdRestApiUrl("/customer"),
     body: customerPayload,
@@ -54,26 +54,31 @@ router.post("/contact", (req, res) => {
       return;
     }
 
-    const requestPayload = getRequestPayload(username, payload);
+    createRequest(res, username, formFields);
+  });
+
+  function createRequest(username, formFields) {
+    const requestPayload = getRequestPayload(username, formFields);
     request.post({
       url: jsdRestApiUrl("/request"),
       body: requestPayload,
       json: true,
       auth: auth()
-    }, (err, httpResponse, body) => {
+    }, (res, err, httpResponse, body) => {
       if (httpResponse.statusCode < 200 || httpResponse.statusCode >= 300) {
-        writeError(res, httpResponse, body)
+        writeError(res, httpResponse, body);
         return;
       }
       res.statusCode = 201;
       res.end(body.issueKey);
     });
-  });
+  }
 
-  function getCustomerPayload(payload) {
+  function getCustomerPayload(formFields) {
+    const email = formFields.email;
     return {
-      email: payload.email,
-      fullName: email2name(payload.email)
+      email: email,
+      fullName: email2name(email)
     };
   }
 

@@ -1,14 +1,14 @@
 $(function () {
     $("#contact").click(function () {
-        var payload = {};
+        var formFields = {};
         $("form input").each(function() {
-            payload[this.name] = $(this).val();
+            formFields[this.name] = $(this).val();
         });
 
         $.ajax("/contact", {
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify(payload)
+            data: JSON.stringify(formFields)
         }).done(function (issueKey) {
             $(".aui-item").html("<p>Thank you. We will get back to you ASAP. Your issue key is " + issueKey + "</p>")
         }).fail(function (jqXhr) {
