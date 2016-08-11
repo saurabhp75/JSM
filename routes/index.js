@@ -1,11 +1,20 @@
-var express = require('express');
-var request = require('request');
-var config = require("../config.json");
+const express = require('express');
+const request = require('request');
+const config = require("../config.json");
 
-var router = express.Router();
+const router = express.Router();
 
 router.get('/', function(req, res) {
-  res.render('contact', {});
+  request.get({
+    url: jsdRestApiUrl(`/servicedesk/${config.serviceDesk.id}/requesttype/${config.serviceDesk.requestTypeId}/field`),
+    auth: auth()
+  }, (err, httpResponse, body) => {
+    if (httpResponse.statusCode === 200) {
+      res.render('contact', {fields: JSON.parse(body).requestTypeFields});
+    } else {
+      writeError(res, httpResponse, body);
+    }
+  });
 });
 
 router.post("/contact", (req, res) => {
@@ -73,24 +82,24 @@ router.post("/contact", (req, res) => {
       }
     };
   }
-
-  function writeError(res, httpResponse, body) {
-    console.log("Operation failed");
-    res.statusCode = httpResponse.statusCode;
-    res.statusMessage = httpResponse.statusMessage;
-    res.end(body.errorMessage);
-  }
-
-  function auth() {
-    return {
-      'user': config.instance.username,
-      'pass': config.instance.password
-    }
-  }
-
-  function jsdRestApiUrl(suffix) {
-    return config.instance.url + "/rest/servicedeskapi" + suffix;
-  }
 });
+
+function writeError(res, httpResponse, body) {
+  console.log("Operation failed");
+  res.statusCode = httpResponse.statusCode;
+  res.statusMessage = httpResponse.statusMessage;
+  res.end(body.errorMessage);
+}
+
+function auth() {
+  return {
+    'user': config.instance.username,
+    'pass': config.instance.password
+  }
+}
+
+function jsdRestApiUrl(suffix) {
+  return config.instance.url + "/rest/servicedeskapi" + suffix;
+}
 
 module.exports = router;
