@@ -85,18 +85,26 @@ router.post("/contact", (req, res) => {
     return email.replace(/@.*/, "");
   }
 
-  function getRequestPayload(username, payload) {
+  function getRequestPayload(username, formFields) {
+    const requestFields = fieldsWithoutEmail(formFields);
     return {
       serviceDeskId: config.serviceDesk.id,
       requestTypeId: config.serviceDesk.requestTypeId,
       raiseOnBehalfOf: username,
-      requestFieldValues: {
-        summary: payload.summary,
-        description: payload.description
-      }
+      requestFieldValues: requestFields
     };
   }
+
+  function fieldsWithoutEmail(fields){
+    const clonedFields = clone(fields)
+    delete clonedFields.email
+    return clonedFields;
+  }
 });
+
+function clone(obj) {
+  return JSON.parse(JSON.stringify(obj))
+}
 
 function writeError(res, httpResponse, body) {
   console.log("Operation failed");
