@@ -1,0 +1,11 @@
+{
+  "instance": {
+    "url": "http://your-jira-instance-address",
+    "username": "your-username",
+    "password": "your-password"
+  },
+  "serviceDesk": {
+    "id": "x",
+    "requestTypeId": "y"
+  }
+}
