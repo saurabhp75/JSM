@@ -10,11 +10,25 @@ router.get('/', function(req, res) {
     auth: auth()
   }, (err, httpResponse, body) => {
     if (httpResponse.statusCode === 200) {
-      res.render('contact', {fields: JSON.parse(body).requestTypeFields});
+      const requestTypeFields = JSON.parse(body).requestTypeFields;
+      var fields = extractStringFields(requestTypeFields);
+      res.render('contact', {fields: fields});
     } else {
       writeError(res, httpResponse, body);
     }
   });
+
+  function extractStringFields(requestTypeFields) {
+    const fields = [];
+    requestTypeFields.forEach(field => {
+      if (field.jiraSchema.type === "string") {
+        fields.push(field);
+      } else {
+        // TODO: handle cases where field is not a string
+      }
+    });
+    return fields;
+  }
 });
 
 router.post("/contact", (req, res) => {
