@@ -64,8 +64,8 @@ router.post("/contact", (req, res) => {
     createRequest(res, username, formFields);
   });
 
-  function createRequest(res, username, formFields) {
-    delete formFields.email; // email is not a JIRA field, delete it from formFields
+  function createRequest(res, username, fields) {
+    delete fields.email; // email is not a JIRA field, delete it from fields
 
     jsdRequest.post({
       url: "/request",
@@ -73,7 +73,7 @@ router.post("/contact", (req, res) => {
         serviceDeskId: config.serviceDesk.id,
         requestTypeId: config.serviceDesk.requestTypeId,
         raiseOnBehalfOf: username,
-        requestFieldValues: formFields
+        requestFieldValues: fields
       }
     }, (err, httpResponse, body) => {
       if (httpResponse.statusCode < 200 || httpResponse.statusCode >= 300) {
