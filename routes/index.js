@@ -18,14 +18,14 @@ router.get('/', (req, res) => {
   (err, httpResponse, body) => {
     if (httpResponse.statusCode === 200) {
       const requestTypeFields = body.requestTypeFields;
-      const fields = extractStringFields(requestTypeFields);
+      const fields = extractFields(requestTypeFields);
       res.render('contact', {fields: fields});
     } else {
       writeError(res, httpResponse, body);
     }
   });
 
-  function extractStringFields(requestTypeFields) {
+  function extractFields(requestTypeFields) {
     const fields = [];
     requestTypeFields.forEach(field => {
       if (field.jiraSchema.type === "string") {
