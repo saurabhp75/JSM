@@ -48,7 +48,7 @@ router.post("/contact", (req, res) => {
       fullName: formFields.email.replace(/@.*/, "")
     },
     headers: {
-      "X-ExperimentalApi": true
+      "X-ExperimentalApi": true // At the moment, the Create customer endpoint is experimental
     }
   }, (err, httpResponse, body) => {
     let username;
