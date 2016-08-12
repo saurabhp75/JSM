@@ -1,13 +1,11 @@
 $(function () {
     $("#contact").click(function () {
         var formFields = {};
-        var formInputs = $("form input");
-        formInputs.each(function() {
+        $("form input").each(function() {
             formFields[this.name] = $(this).val();
         });
 
-        formInputs.prop("disabled", true);
-        $("button").prop("disabled", true);
+        $("form :input").prop("disabled", true);
         $("button").text("Please wait...");
 
         $.ajax("/contact", {
