@@ -3,32 +3,26 @@ html(lang='en')
   head
     meta(charset='UTF-8')
     title Contact Us - MyCompany
-    link(rel='stylesheet', href='//aui-cdn.atlassian.com/aui-adg/5.8.12/css/aui.css', media='all')
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', media='all')
     script(src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js')
-    script(src='//aui-cdn.atlassian.com/aui-adg/5.8.12/js/aui.js', type='text/javascript')
-  body.aui-page-hybrid
-    section#content(role='main')
-      header.aui-page-header
-        .aui-page-header-inner
-          .aui-page-header-main.intro-header
-            h1 Welcome to MyCompany!
-      .aui-page-panel.main-panel
-        .aui-page-panel-inner
-          section.aui-page-panel-item
-            .aui-group
-              .aui-item
-                p
-                  | Please use the form below to contact us.
-                form.aui.top-label
-                  each field in fields
-                    .field-group.top-label
-                      label(for=field.fieldId)
-                        strong #{field.name}
-                      input(id=field.fieldId).text.long-field(type='text', name=field.fieldId)
-                  .field-group.top-label
-                    label(for='email')
-                      strong What is your email address?
-                    input#email.text.long-field(type='text', name='email')
-                  button#contact.aui-button.aui-button-primary
-                    | Send
+    script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+  body.container
+    .jumbotron
+      h1 Welcome to MyCompany!
+    .col-xs-6
+      h4
+        | Please use the form below to contact us.
+      br
+      form
+        each field in fields
+          .form-group
+            label(for=field.fieldId)
+              strong #{field.name}
+            input(id=field.fieldId).form-control(type='text', name=field.fieldId)
+        .form-group
+          label(for='email')
+            strong What is your email address?
+          input#email.form-control(type='text', name='email')
+        button#contact.btn.btn-primary
+          | Send
     script(src='/javascripts/contact.js')
