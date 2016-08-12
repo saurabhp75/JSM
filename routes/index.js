@@ -1,5 +1,5 @@
-const express = require('express');
-const request = require('request');
+const express = require("express");
+const request = require("request");
 const config = require("../config.json");
 
 const router = express.Router();
@@ -7,19 +7,19 @@ const router = express.Router();
 const jsdRequest = request.defaults({
   baseUrl: config.instance.url + "/rest/servicedeskapi",
   auth: {
-    'user': config.instance.username,
-    'pass': config.instance.password
+    user: config.instance.username,
+    pass: config.instance.password
   },
   json: true
 });
 
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
   jsdRequest.get(`/servicedesk/${config.serviceDesk.id}/requesttype/${config.serviceDesk.requestTypeId}/field`,
   (err, httpResponse, body) => {
     if (httpResponse.statusCode === 200) {
       const requestTypeFields = body.requestTypeFields;
       const fields = extractFields(requestTypeFields);
-      res.render('contact', {fields: fields});
+      res.render("contact", {fields: fields});
     } else {
       writeError(res, httpResponse, body);
     }
